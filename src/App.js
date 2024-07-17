@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import {connect} from "react-redux";
+import 'bootstrap/dist/css/bootstrap.css';
+import Column from "./components/Column";
+import CreateModalTask from "./components/CreateTaskModal";
 
-function App() {
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <h1 className="header">{props.appName}</h1>
+        <CreateModalTask />
+        <div className="container text-center">
+          <div className="row align-items-start status-container">
+            {props.statuses.map(status =>
+                <div key={status.id} className="col-lg-3 p-2">
+                  <Column status={status} />
+                </div>
+            )}
+          </div>
+        </div>
+        <div className="footer">
+          Created by <span className="creator">Aleh Nikalayeu</span>
+        </div>
+      </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  appName: state.appName,
+  statuses: state.boardStatuses
+});
+
+export default connect(mapStateToProps)(App);
